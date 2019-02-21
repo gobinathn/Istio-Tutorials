@@ -1,0 +1,42 @@
+Commands
+
+Build docker file and push to local docker repo
+change to project directory and run - 
+mvnw install dockerfile:build
+
+
+gcloud container clusters create istio-tutorial --machine-type=n1-standard-2 --num-nodes=4 --no-enable-legacy-authorization
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user="pmusale@gmail.com"
+kubectl get clusterrolebinding cluster-admin-binding -o yaml
+kubectl apply -f install/kubernetes/istio-demo-auth.yaml
+kubectl get service -n istio-system
+kubectl get pods -n istio-system
+
+kubectl apply -f <(istioctl kube-inject -f C:\Users\pmusa\Downloads\istio-1.0.5\samples\bookinfo\platform\kube\bookinfo.yaml)
+
+istioctl kube-inject -f C:\Users\pmusa\Downloads\kube\IstioCanary\configfiles\workload.yaml > istiocanary_inject.yaml
+kubectl create -f istiocanary_inject.yaml
+kubectl get services
+
+kubectl apply -f istiocanary-gateway.yaml
+
+Validate the deployment kubectl get svc istio-ingressgateway -n istio-system
+
+
+Loggig in on the pods
+
+kubectl -it exec pod name sh
+
+Apply virtualservice and Destinationrule for cananry
+
+kubectl -it exec kube-canary-app-deployment-v1-7445475886-rkbnb sh
+
+Authentication check conflict - If there is conflict service will through 503
+
+istioctl authn tls-check
+
+To test services within cluster 
+
+kubectl proxy --port=8080
+
+http://localhost:8080/api/v1/proxy/namespaces/default/services/hello-message-app:http/

@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-message-app
+  labels:
+    app: hello-message-app
+spec:
+  ports:
+  - port: 8888
+    name: http
+  selector:
+    app: hello-message-app
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-message-app-deployment-v1
+spec:
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: hello-message-app
+        version: v1
+    spec:
+      containers:
+      - name: hello-message-app
+        image: pmusale/kubecanary:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8888
+---
