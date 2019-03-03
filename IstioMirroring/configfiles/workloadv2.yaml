@@ -1,0 +1,54 @@
+##################################################################################################
+# Main  service receiving response from ingress 
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: istio-mirroring-app
+  labels:
+    app: istio-mirroring-app
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: istio-mirroring-app
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: istio-mirroring-app-deployment-v1
+spec:
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: istio-mirroring-app
+        version: v1
+    spec:
+      containers:
+      - name: istio-mirroring-app
+        image: pmusale/istiomirroring:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: istio-mirroring-app-deployment-v2
+spec:
+  replicas: 1
+  template: # template for the pods
+    metadata:
+      labels:
+        app: istio-mirroring-app
+        version: v2
+    spec:
+      containers:
+      - name: istio-mirroring-app
+        image: pmusale/istiomirroring:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+---

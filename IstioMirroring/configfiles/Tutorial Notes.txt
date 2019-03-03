@@ -43,3 +43,17 @@ To test services within cluster
 kubectl proxy --port=8080
 
 http://localhost:8080/api/v1/proxy/namespaces/default/services/hello-message-app:http/
+
+
+Build docker file and push to local docker repo
+change to project directory and run - 
+mvnw install dockerfile:build
+
+
+docker run -p 8080:8080 -t springio/gs-spring-boot-docker:tag
+docker ps
+docker stop <container id>
+docker rm <container id>
+uplod image
+
+Create srvice and deployments.
